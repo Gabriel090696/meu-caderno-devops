@@ -1,4 +1,6 @@
-# # DevOps — Resumo Completo
+# Bom dia 
+
+# DevOps — Resumo Completo
 
 Este material foi elaborado com o objetivo de consolidar e reforçar o aprendizado dos principais conceitos abordados na disciplina de DevOps. A proposta é organizar de forma clara e estruturada os conteúdos estudados, facilitando a revisão e contribuindo para a fixação do conhecimento.
 
