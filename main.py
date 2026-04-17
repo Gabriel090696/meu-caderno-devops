@@ -3,7 +3,7 @@ import random
 from fastapi import FastAPI
 
 app = FastAPI()
-
+ #teste
 
 @app.get("/")
 async def root():
