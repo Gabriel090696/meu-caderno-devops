@@ -27,3 +27,4 @@ jobs:
       - name: Verificar sintaxe do código
         run: |
           python -m py_compile app.py
+
