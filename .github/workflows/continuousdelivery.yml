@@ -23,7 +23,7 @@ jobs:
 
       - name: Verificar código
         run: |
-          python -m py_compile app.py
+          python -m py_compile src/main.py
 
       - name: Gerar artifact
         uses: actions/upload-artifact@v4
