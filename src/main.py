@@ -4,7 +4,9 @@ import os
 import markdown
 
 app = FastAPI()
-DOCS_PATH = "docs"
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DOCS_PATH = os.path.join(BASE_DIR, "docs")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -31,7 +33,6 @@ def ler_documento(arquivo_nome: str):
     if os.path.exists(caminho_completo):
         with open(caminho_completo, "r", encoding="utf-8") as file:
             texto_markdown = file.read()
-            # Converte Markdown para HTML
             html_convertido = markdown.markdown(texto_markdown)
 
         return HTMLResponse(content=f"""
@@ -49,4 +50,4 @@ def ler_documento(arquivo_nome: str):
             </html>
         """)
 
-    raise HTTPException(status_code=404, detail="Arquivo não encontrado")
+    raise HTTPException(status_code=404, detail="Arquivo não encontradodd")
