@@ -4,7 +4,7 @@ import os
 import markdown
 
 app = FastAPI()
-DOCS_PATH = "docs"
+DOCS_PATH = "../docs"
 
 
 @app.get("/", response_class=HTMLResponse)
