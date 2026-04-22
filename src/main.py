@@ -50,4 +50,4 @@ def ler_documento(arquivo_nome: str):
             </html>
         """)
 
-    raise HTTPException(status_code=404, detail="Arquivo não encontradodd")
+    raise HTTPException(status_code=404, detail="Arquivo não encontrado")
