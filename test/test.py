@@ -5,7 +5,6 @@ import os
 client = TestClient(app)
 
 def test_listar_documentos():
-    # 🔥 Garante que existe um arquivo .md para o teste
     os.makedirs(DOCS_PATH, exist_ok=True)
 
     caminho_arquivo = os.path.join(DOCS_PATH, "teste.md")
@@ -22,4 +21,4 @@ def test_documento_inexistente():
     response = client.get("/doc/arquivo_que_nao_existe.md")
 
     assert response.status_code == 404
-    assert response.json()["detail"] == "Arquivo não encontrado"do"
+    assert response.json()["detail"] == "Arquivo não encontrado"
