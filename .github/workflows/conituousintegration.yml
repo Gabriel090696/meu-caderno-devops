@@ -30,7 +30,7 @@ jobs:
           if [ -f app.py ]; then python -m py_compile app.py; fi
 
   notify_discord:
-    needs: build # Faz com que a notificação espere o build terminar
+    needs: build # Faz com que a notificação espere o build terminar dddd
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
