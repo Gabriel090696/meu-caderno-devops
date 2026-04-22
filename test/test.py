@@ -4,6 +4,7 @@ import os
 
 client = TestClient(app)
 
+
 def test_listar_documentos():
     os.makedirs(DOCS_PATH, exist_ok=True)
 
