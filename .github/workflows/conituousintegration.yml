@@ -29,19 +29,3 @@ jobs:
           # Verifica se o arquivo existe antes de compilar
           if [ -f app.py ]; then python -m py_compile app.py; fi
 
-  notify_discord:
-    needs: build # Faz com que a notificação espere o build terminar dddd
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Send Discord notification
-        uses: stegzilla/discord-notify@v2
-        with:
-          webhook_url: ${{ secrets.DISCORDWBHOOK }} # Recomendado usar Secrets!
-          title: "New PR: ${{ github.event.pull_request.title }}"
-          message: |
-            **Creator:** ${{ github.event.pull_request.user.login }}
-            **URL:** ${{ github.event.pull_request.html_url }}
-          include_image: true
-          avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-          username: GitHub PR Notifier
