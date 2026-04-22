@@ -1,22 +1,18 @@
-name: CI/CD Pipeline  # Nome do pipeline que aparece no GitHub Actions
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]  # Executa quando há push na branch main
+    branches: [ main ]
   pull_request:
-    branches: [ main ]  # Executa quando abre PR para a main
+    branches: [ main ]
 
 jobs:
-
-  # =========================
-  # ETAPA 1 — TESTES
-  # =========================
   test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v4  # Baixa o código do repositório
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -25,32 +21,24 @@ jobs:
 
       - name: Instalar dependências
         run: |
-          python -m pip install --upgrade pip  # Atualiza o pip
-          # Instala dependências do projeto se existir requirements.txt
+          python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          # Instala ferramentas de teste
           pip install pytest pytest-cov
 
       - name: Definir PYTHONPATH
-        # Garante que o Python encontre a pasta src no projeto
         run: echo "PYTHONPATH=$PYTHONPATH:$(pwd)" >> $GITHUB_ENV
 
-      - name: Rodar testes
+      - name: Rodar testes unitários
         run: |
-          # Verifica se o arquivo de teste existe
-          if [ -f "test/test.py" ]; then
-            pytest test/test.py  # Executa os testes
-          else
-            echo "Arquivo test/test.py não encontrado"
-            exit 1  # Faz o pipeline falhar se não houver teste
-          fi
+          pytest test/test_unit.py
 
-  # =========================
-  # ETAPA 2 — BUILD
-  # =========================
+      - name: Rodar testes de integração
+        run: |
+          pytest test/test.py
+
   build:
     runs-on: ubuntu-latest
-    needs: test  # 🔥 Só executa se os testes passarem
+    needs: test
 
     steps:
       - name: Checkout do código
@@ -58,47 +46,16 @@ jobs:
 
       - name: Build Docker
         run: |
-          # Verifica se existe Dockerfile
           if [ -f Dockerfile ]; then
-            docker build -t meu-app .  # Constrói a imagem Docker
+            docker build -t meu-app .
           else
             echo "Dockerfile não encontrado, pulando..."
           fi
 
-  # =========================
-  # ETAPA 3 — DEPLOY
-  # =========================
   deploy:
     runs-on: ubuntu-latest
-    needs: build  # 🔥 Só executa se o build passar
+    needs: build
 
     steps:
       - name: Deploy simulado
-        # Aqui não é deploy real, apenas simulação
         run: echo "Deploy realizado com sucesso!"
-
-  # =========================
-  # ETAPA 4 — NOTIFICAÇÃO DE ERRO
-  # =========================
-  notify_failure:
-    runs-on: ubuntu-latest
-
-    # Esse job depende de todos os anteriores
-    needs: [test, build, deploy]
-
-    # 🔥 Só executa se algum job anterior falhar
-    if: failure()
-
-    steps:
-      - name: Notify Discord on Failure
-        uses: stegzilla/discord-notify@v2
-        with:
-          webhook_url: ${{ secrets.DISCORDWBHOOK }}  # URL do webhook do Discord
-          title: "Falha no Pipeline CI/CD"
-          message: |
-            Repositório: ${{ github.repository }}
-            Evento: ${{ github.event_name }}
-            Status: Ocorreu um erro em um dos estágios do pipeline.
-            Log do erro: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          include_image: true
-          username: GitHub Alerta de Erro

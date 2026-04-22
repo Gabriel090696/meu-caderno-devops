@@ -9,16 +9,33 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS_PATH = os.path.join(BASE_DIR, "docs")
 
 
+def listar_arquivos_markdown(caminho_docs):
+    return [f for f in os.listdir(caminho_docs) if f.endswith(".md")]
+
+
+def gerar_links_html(arquivos):
+    return "".join([f'<li><a href="/doc/{f}">{f}</a></li>' for f in arquivos])
+
+
+def ler_arquivo_markdown(caminho_completo):
+    with open(caminho_completo, "r", encoding="utf-8") as file:
+        return file.read()
+
+
+def converter_markdown_para_html(texto_markdown):
+    return markdown.markdown(texto_markdown)
+
+
 @app.get("/", response_class=HTMLResponse)
 def listar_documentos():
-    arquivos = [f for f in os.listdir(DOCS_PATH) if f.endswith(".md")]
-    links = "".join([f'<li><a href="/doc/{f}">{f}</a></li>' for f in arquivos])
+    arquivos = listar_arquivos_markdown(DOCS_PATH)
+    links = gerar_links_html(arquivos)
 
     html_content = f"""
     <html>
-        <head><title>Zênite - Caderno DevOps</title></head>
+        <head><title>  Caderno DevOps</title></head>
         <body>
-            <h1>Docs do ProjetoMeu Caderno Minha Vida</h1>
+            <h1>Docs do Projeto Meu Caderno Minha Vida</h1>
             <ul>{links}</ul>
         </body>
     </html>
@@ -31,9 +48,8 @@ def ler_documento(arquivo_nome: str):
     caminho_completo = os.path.join(DOCS_PATH, arquivo_nome)
 
     if os.path.exists(caminho_completo):
-        with open(caminho_completo, "r", encoding="utf-8") as file:
-            texto_markdown = file.read()
-            html_convertido = markdown.markdown(texto_markdown)
+        texto_markdown = ler_arquivo_markdown(caminho_completo)
+        html_convertido = converter_markdown_para_html(texto_markdown)
 
         return HTMLResponse(content=f"""
             <html>
