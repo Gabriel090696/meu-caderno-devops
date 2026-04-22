@@ -5,7 +5,6 @@ from src.main import (
     ler_arquivo_markdown,
 )
 
-
 def test_gerar_links_html():
     arquivos = ["devops.md", "docker.md"]
     resultado = gerar_links_html(arquivos)
@@ -14,14 +13,12 @@ def test_gerar_links_html():
     assert '/doc/docker.md' in resultado
     assert '<li><a href="' in resultado
 
-
 def test_converter_markdown_para_html():
     texto = "# Título"
     resultado = converter_markdown_para_html(texto)
 
     assert "<h1>" in resultado
     assert "Título" in resultado
-
 
 def test_listar_arquivos_markdown(tmp_path):
     (tmp_path / "devops.md").write_text("# DevOps", encoding="utf-8")
