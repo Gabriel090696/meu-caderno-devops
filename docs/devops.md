@@ -6,7 +6,7 @@ Este material foi elaborado com o objetivo de consolidar e reforçar o aprendiza
 DevOps é a integração entre desenvolvimento (Dev) e operações (Ops) com o objetivo de entregar software de forma mais rápida, segura e com maior qualidade.
 
 ## Objetivo
-- Melhorar a colaboração entre equipes  
+- Melhorar a colaboração entre equipes 
 - Automatizar processos  
 - Aumentar a velocidade de entrega  
 - Garantir qualidade e estabilidade  
